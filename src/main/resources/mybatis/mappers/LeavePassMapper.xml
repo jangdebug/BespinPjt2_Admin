@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oneteam.dormeaseadmin.admin.leavePass.ILeavePassMapper">
+    <update id="updateApproveLeavePass" parameterType="Integer">
+        update
+            leave_pass
+        set admin_approval = 1,
+            mod_date       = now()
+        where
+            no = #{no}
+    </update>
+    <select id="selectLeavePasses" parameterType="String">
+        SELECT COUNT(*)
+        FROM leave_pass l
+                 LEFT OUTER JOIN
+             parents p
+             ON l.student_no = p.student_no
+                 JOIN
+             schoolInfo s
+             ON l.school_no = s.school_code
+        WHERE l.school_no = #{schoolNo}
+        ORDER BY end_date DESC
+    </select>
+    <select id="selectLeavePassList" parameterType="PageMakerDto" resultType="LeavePassDto">
+        SELECT DISTINCT l.*,
+               p.phone as parent_phone,
+               s.school_name
+        FROM leave_pass l
+                 LEFT OUTER JOIN
+             parents p
+             ON l.student_no = p.student_no
+                 JOIN
+             schoolInfo s
+             ON l.school_no = s.school_code
+        WHERE l.school_no = #{keyWord}
+        ORDER BY end_date DESC
+            LIMIT ${criteria.skip}, ${criteria.amount}
+    </select>
+    <select id="selectLeavePassByNo" parameterType="String" resultType="LeavePassDto">
+        SELECT *
+        FROM leave_pass
+        WHERE
+            no = #{no}
+    </select>
+    <update id="updateLeavePass" parameterType="LeavePassDto">
+        UPDATE
+        leave_pass
+        SET comeback_date = now(),
+        mod_date = now()
+        <where>
+            <if test="no != 0">
+                AND
+                no = #{no}
+            </if>
+            <if test="no == 0">
+                end_date = CURRENT_DATE()
+                AND
+                school_no = #{school_no}
+            </if>
+        </where>
+    </update>
+    <select id="selectLeavePassBySchoolNo" parameterType="String"
+            resultType="LeavePassDto">
+        SELECT DISTINCT l.*,
+               p.phone as parent_phone,
+               s.school_name
+        FROM leave_pass l
+                 JOIN
+             parents p
+             ON l.student_no = p.student_no
+                 JOIN
+             schoolInfo s
+             ON l.school_no = s.school_code
+        WHERE l.school_no = #{schoolNo}
+          AND l.comeback_date = '1000-01-01'
+    </select>
+</mapper>

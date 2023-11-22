@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:replace="~{/include/title.html::title}">
+
+    </title>
+
+    <script th:replace="~{/include/use_console.html::js}" type="text/javascript"></script>
+    <script th:replace="~{/include/common_js.html::jquery_cdn}" type="text/javascript"></script>
+    <script th:replace="~{/include/modifyParentsFormJs.html::js}" type="text/javascript"></script>
+
+
+</head>
+<body>
+
+<header th:replace="~{/include/headerNavFooter.html::header}">
+</header>
+
+
+<nav th:replace="~{/include/headerNavFooter.html::nav}">
+
+</nav>
+
+<section>
+    <div id="sectionWrap">
+        <div class="word">
+            회 원 수 정
+        </div>
+        <div class="modifyParentsForm">
+            <form th:action="@{/user/parents/modifyParentsConfirm}" method="post" name="modifyParentsForm">
+                <input type="hidden" name="no" th:value="${parentsDto.no}">
+                <input type="text" name="id" th:value="${parentsDto.id}" readonly disabled><br>
+                <input type="password" name="password" value="*****" readonly disabled>&nbsp;
+                <input type="button" id="updatePassword" value="비밀번호 수정" th:data-no="${parentsDto.no}"> <br>
+                <input type="text" name="name" placeholder="이름" th:value="${parentsDto.name}" readonly disabled><br>
+                핸드폰&nbsp;
+                <input type="hidden" name="phone">
+                <select id="phone1" name="phone1">
+                    <option value="">---선택해주세요---</option>
+                    <option value="010">010</option>
+                    <option value="011">011</option>
+                    <option value="016">016</option>
+                    <option value="016">017</option>
+                    <option value="019">019</option>
+                </select>&nbsp;- &nbsp;
+                <input type="text" name="phone2" oninput="filterKey();"> &nbsp;- &nbsp;
+                <input type="text" name="phone3" oninput="filterKey();"><br>
+                메일&nbsp;
+                <input type="hidden" name="mail">
+                <input type="text" name="mail1" placeholder="메일"> @
+                <select name="mail2">
+                    <option value="">---선택해주세요---</option>
+                    <option value="gmail.com">gmail.com</option>
+                    <option value="naver.com">naver.com</option>
+                    <option value="daum.net">daum.net</option>
+                </select><br>
+                우편번호<input type="text" readonly id="postcode" name="zip_code" th:value="${parentsDto.zip_code}" placeholder="우편번호">
+                <input type="button" onclick="getPostcode()" value="우편번호 찾기"><br>
+                주소
+                <input type="text" id="address" name="address" th:value="${parentsDto.address}" placeholder="주소"><br>
+                <input type="text" id="detailAddress" name="address_detail1"
+                       th:value="${parentsDto.address_detail1}" placeholder="상세주소를 입력하세요."><br>
+                <input type="text" id="extraAddress" name="address_detail2"
+                       th:value="${parentsDto.address_detail2}" placeholder="참고항목"><br>
+                학교 이름 &nbsp;
+                <input type="text" name="school_name" th:value="${parentsDto.school_name}" readonly disabled><br>
+                학년 &nbsp;
+                <input type="text" name="student_grade" th:value="${parentsDto.student_grade}" readonly disabled><br>
+                반 &nbsp;
+                <input type="text" name="student_class" th:value="${parentsDto.student_class}" readonly disabled><br>
+                <input type="button" value="회원 수정" onclick="modifyAccountConfirm();">
+            </form>
+
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{/include/headerNavFooter.html::footer}">
+
+
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script th:src="@{/js/postCodeApi.js}" type="text/javascript"></script>
+
+</footer>
+
+</body>
+</html>

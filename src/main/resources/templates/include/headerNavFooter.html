@@ -1,0 +1,80 @@
+<header th:fragment="header">
+    <div id="headerWrap">
+        <div class="headerContainer">
+                <a th:href="@{/}">
+                    <img src="/imgs/no_background_logo_test.png">
+                </a>
+
+                <div class="headerMenuBar">
+
+                    <span class="home">
+                        <a th:href="@{/}">홈</a>
+                    </span>
+
+                    <span class="notice">
+                        <a th:href="@{/notice/noticeListForm}">공지사항</a>
+                    </span>
+
+                    <span class="leavePass">
+                        <a th:href="@{/leavePass/leavePassList}">외박</a>
+                    </span>
+
+                    <span class="shop">
+                        <a th:href="@{/product}">매점</a>
+                    </span>
+
+                </div>
+                <div class="memberWrap" th:if="${session.loginedMemberDto == null && session.loginedMemberDto == null}">
+                    <a th:href="@{/admin/member/loginForm}">로그인</a>
+                </div>
+                <div class="memberWrap" th:if="${session.loginedMemberDto != null}">
+                    <a th:if="${session.loginedMemberDto != null}" th:href="@{/admin/student/logoutConfirm}">로그아웃</a>
+                </div>
+
+<!--        엑셀 파일 관련 자료        -->
+<!--                <div>-->
+<!--                    <form method="post" action="/upload/excel" enctype="multipart/form-data">-->
+<!--                        <input type="file" name="file" accept=".xlsx">-->
+<!--                        <button type="submit">Upload</button>-->
+<!--                    </form>-->
+<!--                </div>-->
+
+        </div>
+    </div>
+    <hr>
+</header>
+
+<nav th:fragment="nav">
+    <div id="navWrap"> &nbsp;&nbsp;
+        <table>
+            <thead>
+                <tr>
+                    <th th:text="${session.loginedMemberDto.school_name}">
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <a>
+                            공지사항
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a>
+                            자유게시판
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</nav>
+
+<footer th:fragment="footer">
+    <div id="footerWrap">
+        Copyright © ONE-TEAM Corp. All Rights Reserved.
+    </div>
+</footer>

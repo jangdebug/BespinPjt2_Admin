@@ -1,0 +1,89 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.section-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.section-wrap > div {
+    margin-top: 100px;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+#registProductForm input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#registProductForm button {
+    margin: 15px auto;
+    width: 100%;
+    padding: 10px;
+    background-color: #1976d2;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#registProductForm button:hover {
+    background-color: #1565c0;
+}
+
+/* 테이블 스타일 */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    border: 1px solid #ccc;
+}
+
+/* 테이블 셀 스타일 */
+td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 짝수 행 배경색 변경 */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* 마우스 호버 시 배경색 변경 */
+tr:hover {
+    background-color: #e0e0e0;
+}
+
+#registProduct form input[type="button"] {
+    margin: 15px auto;
+    width: 100%;
+    padding: 10px;
+    background-color: #1976d2;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#registProduct form input[type="button"]:hover {
+    background-color: #1565c0;
+}

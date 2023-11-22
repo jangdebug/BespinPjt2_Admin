@@ -1,0 +1,75 @@
+<script th:fragment="js" type="text/javascript">
+    $(document).ready(function() {
+        console.log('DOCUMENT READY!!');
+
+        initEvent();
+
+    });
+
+    function initEvent() {
+        console.log("initEvent() CALLED!!!");
+
+
+    }
+
+    function loginConfirm() {
+        console.log("loginConfirm() CALLED!!!");
+
+        let form = document.loginForm;
+
+        if(form.id.value == ''){
+            alert("아이디를 입력해주세요!");
+            form.id.focus();
+        } else if(form.password.value == ''){
+            alert("비밀번호를 입력해주세요!");
+            form.password.focus();
+        }
+        else {
+            ajax_loginConfirm(form.id.value, form.password.value);
+        }
+
+    }
+
+
+    // AJAX START
+
+    function ajax_loginConfirm(id, password){
+        console.log("ajax_loginConfirm() CALLED!!!");
+
+        let formData = new FormData($("form.loginForm")[0]);
+        formData.append("id", id);
+        formData.append("password", password);
+
+        $.ajax({
+            url: '/admin/member/loginConfirm',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                console.log('AJAX SUCCESS - ajax_loginConfirm()');
+
+                $("div.loginConfirmResult").children().remove();
+
+                let result = data.result;
+                if(result){
+                    alert("성공적으로 로그인되었습니다.");
+
+                    location.href= "/";
+
+                } else {
+                    let appendTag = "<span>아이디와 비밀번호가 맞지 않습니다!</span>";
+                    if(data.fail_count >= 5 ){
+                        appendTag += "<br><span>비밀번호가 5회 이상 틀렸습니다. 관리자에게 문의해주세요</span>";
+                    }
+
+                    $("div.loginConfirmResult").append(appendTag);
+                }
+
+            },
+            error: function(data) {
+                console.log('AJAX ERROR - ajax_loginConfirm()');
+            }
+        });
+    }
+</script>

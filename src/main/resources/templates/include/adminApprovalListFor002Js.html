@@ -1,0 +1,61 @@
+<script th:fragment="js" th:inline="javascript" type="text/javascript">
+  $(document).ready(function() {
+    console.log('DOCUMENT READY!!');
+
+    initEvent();
+    setPage();
+  });
+
+
+  function initEvent() {
+    console.log("initEvent() CALLED!!!");
+      $("a.approveAdmin").on('click', function () {
+          console.log("approveAdmin CLICK HANDLER()!!!!");
+
+          let no = $(this).data("no");
+          approveAdmin(no);
+      });
+
+  }
+
+  function approveAdmin(no) {
+
+      let pageMakerDto = [[${pageMakerDto}]];
+
+      location.href = "/admin/member/admin002ApprovalList?no="+no+"&pageNum="+pageMakerDto.criteria.pageNum;
+  }
+
+
+
+  function setPage() {
+      console.log('setPage() CALLED!!');
+
+      let pageMakerDto = [[${pageMakerDto}]];
+
+      $("#sectionWrap  div.pageWrap div.pageNumber").children().remove();
+
+
+      if (pageMakerDto.prev) {
+          $("#sectionWrap  div.pageWrap > div.pageNumber").append("<a href='#none' data-pagenum = '" + (pageMakerDto.startPage - 1) + "'>PRE</a>");
+      }
+
+      /* 처음 페이지 */
+      if (pageMakerDto.criteria.pageNum > 10) {
+          $("#sectionWrap div.pageWrap > div.pageNumber").append("<a href='#none' data-pagenum = '1' " + "'>1</a><span>...</span>");
+      }
+
+      /* 페이지 넘버링 */
+      for (let p = parseInt(pageMakerDto.startPage); p <= parseInt(pageMakerDto.endPage); p++) {
+          $("#sectionWrap  div.pageWrap > div.pageNumber").append("<a href='#none' data-pagenum='" + p + "'>" + p + "</a>");
+      }
+
+      /* 페이지 하이라이트 */
+      $("#section_wrap > div.page_wrap > div.pageNumber a[data-pagenum=" + pageMakerDto.criteria.pageNum + "]").addClass('selectedPageNum');
+
+      /* 다음 페이지 */
+      if (pageMakerDto.next) {
+          $("#sectionWrap  div.pageWrap > div.pageNumber").append("<a href='#none' data-pagenum = '" + (pageMakerDto.endPage + 1) + "'>NEX</a>");
+      }
+  }
+
+</script>

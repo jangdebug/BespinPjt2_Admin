@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oneteam.dormeaseadmin.upload.IExcelUploadMapper">
+
+    <insert id="insertExcelData" parameterType="java.util.List">
+        INSERT INTO
+            school_Excel (
+                name,
+                zip_code,
+                address,
+                reg_date
+            )
+        VALUES
+        <foreach collection="list" item="item" separator=", ">
+            (
+                #{item.name},
+                #{item.zip_code},
+                #{item.address},
+                NOW()
+            )
+        </foreach>
+    </insert>
+
+</mapper>

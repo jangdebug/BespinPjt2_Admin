@@ -1,0 +1,152 @@
+/* 전체 페이지 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Flex 컨테이너 스타일 */
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%; /* 80%로 변경 */
+    margin: 0 auto; /* 가운데 정렬을 위해 margin 추가 */
+    max-width: 800px; /* 최대 너비 설정 (원하는 크기로 조절) */
+    min-height: 100vh; /* 화면 최소 높이 설정 */
+    padding: 20px; /* 적절한 패딩 추가 */
+}
+
+/* 페이지 제목 스타일 */
+.flex-container > div:first-child {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* 등록 상품 폼 스타일 */
+#registProductForm {
+    width: 100%;
+    text-align: center;
+}
+
+#registProductForm input[type="text"],
+#registProductForm input[type="button"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#registProductForm input[type="button"] {
+    background-color: #1976d2;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#registProductForm input[type="button"]:hover {
+    background-color: #1565c0;
+}
+
+/* 폼 그룹 스타일 */
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* 입력 필드 스타일 */
+.form-group input[type="text"] {
+    flex: 0 0 80%; /* 80% 크기로 지정 */
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* 버튼 스타일 */
+.form-group input[type="button"] {
+    width: auto;
+    padding: 10px;
+    background-color: #1976d2;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-group input[type="button"]:hover {
+    background-color: #1565c0;
+}
+
+/* 테이블 스타일 */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    border: 1px solid #ccc;
+}
+
+/* 테이블 셀 스타일 */
+td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 짝수 행 배경색 변경 */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* 마우스 호버 시 배경색 변경 */
+tr:hover {
+    background-color: #e0e0e0;
+}
+
+/* 버튼 컨테이너 스타일 */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px; /* 적절한 여백 설정 */
+}
+
+/* 버튼 스타일 */
+.button-container input[type="button"],
+.button-container a {
+    width: 100%; /* 전체 너비를 차지하도록 설정 */
+    margin-bottom: 10px; /* 버튼 사이의 간격 조절 */
+    padding: 10px;
+    background-color: #1976d2;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center; /* 텍스트 중앙 정렬 */
+    text-decoration: none; /* 링크의 밑줄 제거 */
+    display: block; /* 블록 레벨 요소로 변경하여 너비 100% 사용 */
+}
+
+.button-container input[type="button"]:hover,
+.button-container a:hover {
+    background-color: #1565c0;
+}
+
+
+
+

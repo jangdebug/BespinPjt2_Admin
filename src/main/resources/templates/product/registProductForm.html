@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" th:href="@{/css/product/productRegist.css}">
+
+  <script th:replace="~{/include/common_js.html::jquery_cdn}" type="text/javascript"></script>
+  <script th:replace="~{/include/allProduct_js.html::js}" type="text/javascript"></script>
+  <script th:replace="~{/include/selectProduct_js.html::js}" type="text/javascript"></script>
+
+  <script th:src="@{/js/product/registProductForm.js}" type="text/javascript"></script>
+  <script th:src="@{/js/product/findProduct.js}" type="text/javascript"></script>
+
+</head>
+<body>
+
+
+<div class="flex-container">
+  <div>
+    <span th:text="${schoolDto.school_name}"></span><br>
+    등록 상품 리스트<br>
+    (학교 관리자용)
+  </div>
+
+  <div id="registProductForm">
+    <div class="form-group">
+      <input type="text" name="product_name" placeholder="INPUT PRODUCT NAME">
+      <input type="button" value="find product" onclick="findProduct();">
+    </div>
+      <input type="button" value="전체 보기" onclick="allfindProduct();"><br><br>
+  </div>
+
+  <div id="selectProduct">
+      <table>
+
+      </table>
+  </div>
+
+  <div id="checkedProduct">
+    <ul>
+
+    </ul>
+  </div>
+
+  <div id="registProduct" class="button-container">
+    <form th:action="@{/product/registProductConfirm}" name="registProductForm" method="post">
+      <input type="hidden" name="school_no" th:value="${session.loginedMemberDto.school_no}">
+      <input type="hidden" name="admin_id" th:value="${session.loginedMemberDto.id}">
+      <input type="hidden" name="admin_name" th:value="${session.loginedMemberDto.name}">
+      <input type="hidden" name="admin_grade" th:value="${session.loginedMemberDto.grade}">
+
+      <input type="button" value="상품 등록" onclick="registProductConfirm();">
+    </form>
+  </div>
+  <div id="back" class="button-container">
+    <a th:href="@{/product}">뒤로가기</a>
+  </div>
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oneteam.dormeaseadmin.admin.member.IMemberMapper">
+
+    <select id="selectDuplicateByID" parameterType="String" resultType="boolean">
+        SELECT count(*)
+        FROM (SELECT id
+              FROM student
+              UNION
+              SELECT id
+              FROM parents
+              UNION
+              SELECT id
+              FROM admin) u
+        WHERE id = #{id}
+    </select>
+
+    <insert id="createAccountConfirm" parameterType="MemberDto">
+        INSERT INTO admin (school_no,
+                           id,
+                           password,
+                           name,
+                           gender,
+                           position,
+                           phone,
+                           zip_code,
+                           address,
+                           address_detail1,
+                           address_detail2,
+                           mail,
+                           reg_date,
+                           mod_date)
+        VALUES (#{school_no},
+                #{id},
+                #{password},
+                #{name},
+                #{gender},
+                #{position},
+                #{phone},
+                #{zip_code},
+                #{address},
+                #{address_detail1},
+                #{address_detail2},
+                #{mail},
+                NOW(),
+                NOW())
+    </insert>
+    <select id="selectMemberByID" parameterType="String" resultType="MemberDto">
+        SELECT *
+        FROM admin
+        WHERE id = #{id}
+    </select>
+    <insert id="insertAdminLoginHistory" parameterType="MemberDto">
+        INSERT INTO admin_login_history
+        (admin_id, admin_name, admin_grade, admin_mail, login_ip, login_date)
+        VALUES (#{id}, #{name}, #{grade}, #{mail}, '218.235.89.82', NOW())
+    </insert>
+    <select id="selectMaxNoFromLoginHistory">
+        SELECT max(no)
+        FROM admin_login_history
+        WHERE admin_id = #{id}
+    </select>
+    <update id="updateFailCount">
+        UPDATE
+        admin
+        SET
+        <if test="no != 0">
+            fail_count = 0
+        </if>
+        <if test="no == 0">
+            fail_count = fail_count + 1
+        </if>
+        WHERE
+        id = #{id}
+    </update>
+    <update id="updateAdminLoginHistory">
+        UPDATE
+            admin_login_history
+        SET logout_date = NOW()
+        WHERE
+            no = #{maxNo}
+    </update>
+    <select id="selectSchoolsByName" parameterType="String">
+        SELECT DISTINCT
+            info.*,
+            excel.address
+        FROM schoolInfo info
+            JOIN school_Excel excel
+                ON info.zip_code = excel.zip_code
+        WHERE info.school_name LIKE CONCAT('%', #{name}, '%')
+        ORDER BY info.school_name ASC;
+    </select>
+    <select id="selectCount" parameterType="String">
+        SELECT
+            COUNT(*)
+        FROM
+            ${userType}
+        WHERE
+            school_no = #{schoolNo}
+    </select>
+    <select id="selectStudents" parameterType="PageMakerDto" resultType="StudentDto">
+        SELECT
+            *
+        FROM
+            student
+        WHERE
+            school_no = #{keyWord}
+        LIMIT
+            #{criteria.skip}, #{criteria.amount}
+    </select>
+    <select id="selectParents" parameterType="PageMakerDto" resultType="ParentsDto">
+        SELECT
+            *
+        FROM
+            parents p
+        JOIN
+            student s
+        p.student_no = s.no
+        WHERE
+            s.school_no = #{keyWord}
+        LIMIT
+            #{criteria.skip}, #{criteria.amount}
+    </select>
+    <update id="updateApproval" parameterType="String">
+        UPDATE
+            ${userType}
+        SET
+            status = 1
+        WHERE
+            no = #{no}
+    </update>
+    <select id="selectStudent" parameterType="Integer" resultType="StudentDto">
+        SELECT
+            *
+        FROM
+            student
+        WHERE
+            no = #{no}
+    </select>
+    <select id="selectParent" parameterType="Integer" resultType="ParentsDto">
+        SELECT
+            *
+        FROM
+            parents
+        WHERE
+            no = #{no}
+    </select>
+    <update id="updateStudent" parameterType="StudentDto">
+        UPDATE
+            student
+        SET
+            phone = #{phone},
+            mail = #{mail},
+            gender = #{gender},
+            zip_code = #{zip_code},
+            address = #{address},
+            address_detail1 = #{address_detail1},
+            address_detail2 = #{address_detail2}
+        WHERE
+            no = #{no}
+    </update>
+    <update id="updateParent" parameterType="ParentsDto">
+        UPDATE
+            parents
+        SET
+            phone = #{phone},
+            mail = #{mail},
+            zip_code = #{zip_code},
+            address = #{address},
+            address_detail1 = #{address_detail1},
+            address_detail2 = #{address_detail2}
+        WHERE
+            no = #{no}
+    </update>
+    <select id="selectAdmin" parameterType="PageMakerDto" resultType="MemberDto">
+        SELECT
+            *
+        FROM
+            admin
+        <where>
+            <if test="keyWord != null">
+            not grade = "admin_003"
+            </if>
+        </where>
+    </select>
+</mapper>

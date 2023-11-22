@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oneteam.dormeaseadmin.api.IApiMapper">
+
+    <select id="countTable" resultType="Integer">
+        SELECT
+            count(*)
+        FROM
+            schoolInfo
+    </select>
+
+    <insert id="insertSchoolData" parameterType="java.util.List">
+        INSERT INTO
+                schoolInfo (
+                            atpt_code,
+                            atpt_name,
+                            zip_code,
+                            school_code,
+                            school_name,
+                            school_knd,
+                            status
+                            )
+        VALUES
+            <foreach collection="list" item="item" separator=", ">
+                (
+                    #{item.atpt_code},
+                    #{item.atpt_name},
+                    #{item.zip_code},
+                    #{item.school_code},
+                    #{item.school_name},
+                    #{item.school_knd},
+                    #{item.status}
+                )
+        </foreach>
+    </insert>
+
+    <update id="updateSchoolInfoStatusFalse">
+        UPDATE
+            schoolInfo
+        SET
+            status=0
+    </update>
+
+    <update id="updateSchoolData" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE schoolInfo
+            SET
+            atpt_code = #{item.atpt_code},
+            atpt_name = #{item.atpt_name},
+            zip_code = #{item.zip_code},
+            school_name = #{item.school_name},
+            school_knd = #{item.school_knd},
+            status = #{item.status}
+            WHERE school_code = #{item.school_code}
+        </foreach>
+    </update>
+
+</mapper>

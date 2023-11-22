@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" th:href="@{/css/product/home.css}">
+</head>
+<body>
+
+<div class="container">
+  <div class="section-title">
+    상품 페이지
+  </div>
+
+  <!-- 등급은 000. 001. 002. 003 이 있다. -->
+  <div class="notice" th:if="${session.loginedMemberDto != null}">
+    <a th:href="@{/product/productNotice}">상품 공지 (전체 관리자용 + 교직원)</a>
+  </div>
+
+  <div class="Rfinal" th:if="${session.loginedMemberDto.grade == 'admin000'}">
+    <a th:href="@{/product/adminProductForm}">상품 등록 (최종 관리자용)</a>
+  </div>
+
+  <div class="Lfinal" th:if="${session.loginedMemberDto.grade == 'admin000'}">
+    <a th:href="@{/product/adminProductList}">상품 리스트 (최종 관리자용)</a>
+  </div>
+
+  <div class="Rschool" th:if="${session.loginedMemberDto.grade == 'admin001'}">
+    <a th:href="@{/product/registProductForm}">상품 등록 (학교 관리자용)</a>
+  </div>
+
+  <div class="Lschool" th:if="${session.loginedMemberDto.grade == 'admin001' or session.loginedMemberDto.grade == 'admin002'}">
+    <a th:href="@{/product/registProductList}">개시 상품 리스트 (학교 관리자용 + 교직원)</a>
+  </div>
+
+  <div class="back">
+    <a th:href="@{/}">뒤로 가기</a>
+  </div>
+</div>
+
+</body>
+</html>

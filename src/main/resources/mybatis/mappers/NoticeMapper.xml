@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oneteam.dormeaseadmin.notice.INoticeMapper">
+
+    <select id="selectAllNotice" parameterType="Map">
+
+        SELECT
+            n.*,
+            a.name AS admin_name
+        FROM
+            notice_board n
+        INNER JOIN
+            admin a
+        ON
+            n.admin_no = a.no
+        WHERE
+            n.school_no = #{schoolNo}
+        AND
+            n.status = 1
+        <if test="keyWord != null">
+            <if test='!search.equals("name")'>
+                AND n.${search} LIKE CONCAT('%', #{keyWord}, '%')
+            </if>
+            <if test='search.equals("name")'>
+                AND a.name LIKE CONCAT('%', #{keyWord}, '%')
+            </if>
+        </if>
+        ORDER BY status DESC, no DESC
+        LIMIT
+            #{pageMakerDto.criteria.skip}, #{pageMakerDto.criteria.amount}
+
+    </select>
+
+    <select id="selectCountOfNotice" parameterType="Map">
+        SELECT
+        COUNT(*)
+        FROM
+        notice_board n
+        JOIN
+        admin a
+        ON
+        n.admin_no = a.no
+        WHERE
+        n.school_no = #{schoolNo}
+        AND
+        n.status = 1
+        <if test="keyWord != null">
+            <if test='!search.equals("name")'>
+                AND n.${search} LIKE CONCAT('%', #{keyWord}, '%')
+            </if>
+            <if test='search.equals("name")'>
+                AND a.name LIKE CONCAT('%', #{keyWord}, '%')
+            </if>
+        </if>
+    </select>
+
+    <select id="selectCountOfFixedNotice" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            notice_board
+        WHERE
+            school_no = #{schoolNo}
+        AND
+            start_date <![CDATA[<=]]> NOW()
+        AND
+            end_date <![CDATA[>=]]> NOW()
+    </select>
+
+    <update id="updateNoticeHit" parameterType="Integer">
+
+        UPDATE
+            notice_board
+        SET
+            hit = hit+1
+        WHERE
+            no = #{no}
+
+    </update>
+
+    <select id="selectDetailNotice" parameterType="int">
+
+        SELECT
+            n.*,
+            a.name AS admin_name
+        FROM
+            notice_board n
+        JOIN
+            admin a
+        ON
+            n.admin_no = a.no
+        WHERE
+            n.no = #{no}
+        AND
+            n.status = 1
+
+    </select>
+
+    <select id="selectUploadedFiles" parameterType="int">
+
+        SELECT
+            *
+        FROM
+            notice_upload_file
+        WHERE
+            notice_no = #{no}
+        ORDER BY no ASC
+
+    </select>
+
+    <select id="selectCurrentNoticeNo" parameterType="Integer">
+
+        SELECT
+            no
+        from
+            notice_board
+        ORDER BY no DESC
+            LIMIT 1
+
+    </select>
+
+    <insert id="insertNewFile" parameterType="java.util.List">
+
+        INSERT INTO
+        notice_upload_file (
+        notice_no, ori_file_name, notice_attach_file, dir_name)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.notice_no}, #{item.ori_file_name}, #{item.notice_attach_file}, #{item.dir_name})
+        </foreach>
+
+    </insert>
+
+    <insert id="insertNewNotice" parameterType="map">
+
+        INSERT INTO
+            notice_board (
+            school_no, admin_no, title, content, reg_date, mod_date )
+        VALUES (
+            #{loginedMemberDto.school_no}, #{loginedMemberDto.no}, #{noticeDto.title}, #{noticeDto.content}, NOW(), NOW())
+
+    </insert>
+
+    <delete id="deleteFilesForModify" parameterType="Integer">
+
+        DELETE FROM
+            notice_upload_file
+        WHERE
+            board_no = #{board_no}
+
+    </delete>
+
+    <update id="updateNotice" parameterType="NoticeDto">
+
+        UPDATE
+            notice_board
+        SET
+            title = #{title},
+            content = #{content},
+            mod_date = #{mod_date}
+        WHERE
+            no = #{no}
+
+    </update>
+
+    <update id="updateNoticeForDelete" parameterType="Integer">
+
+        UPDATE
+            notice_board
+        SET
+            status = 0
+        WHERE
+            no = #{no}
+
+    </update>
+
+</mapper>

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oneteam.dormeaseadmin.product.IProductMapper">
+
+    <!-- 컨벤션 중 추가 기능 -->
+    <select id="findSchoolByCode" resultType="com.oneteam.dormeaseadmin.admin.school.SchoolDto">
+        SELECT *
+        FROM schoolInfo
+        WHERE school_code = #{school_no}
+    </select>
+
+    <!--  전체 관리자 용  -->
+    <insert id="insertNotice" parameterType="com.oneteam.dormeaseadmin.product.ProductDto">
+        INSERT INTO
+            product_notice(
+                           img,
+                           name,
+                           price,
+                           status,
+                           reg_date
+                        )
+        VALUES(
+               #{img},
+               #{name},
+               #{price},
+               #{status},
+               NOW()
+            )
+    </insert>
+
+    <select id="productNoticeList" resultType="com.oneteam.dormeaseadmin.product.ProductNoticeDto">
+        SELECT
+            *
+        FROM
+            product_notice
+        WHERE
+            name like CONCAT('%',#{keyWord},'%')
+        ORDER BY
+            no DESC
+            LIMIT #{skip}, #{amount}
+    </select>
+
+    <select id="productNoticeListCnt" parameterType="String" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            product_notice
+        WHERE
+            name like CONCAT('%',#{keyWord},'%')
+    </select>
+
+
+    <!--  학교 관리자 용  -->
+    <select id="selectSchoolZipCodeByAdmin" parameterType="com.oneteam.dormeaseadmin.admin.member.MemberDto" resultType="String">
+        SELECT
+            DISTINCT si.zip_code
+        FROM
+            admin a
+        JOIN
+            schoolInfo si
+        ON
+            a.school_no = #{school_no} AND
+            a.school_no = si.school_code
+    </select>
+
+    <select id="selectSchoolZipCodeBySchoolNo" parameterType="String" resultType="String">
+        SELECT
+        zip_code
+        FROM
+            schoolInfo
+        WHERE
+            school_code = #{schoolNo}
+    </select>
+
+    <select id="selectSchoolZipCodeAndName" parameterType="com.oneteam.dormeaseadmin.product.ProductRegistDto" resultType="com.oneteam.dormeaseadmin.product.ProductRegistDto">
+        SELECT
+            DISTINCT si.zip_code,
+            si.school_name
+        FROM
+            admin a
+        JOIN
+            schoolInfo si
+        ON
+            a.school_no = #{school_no} AND
+            a.school_no = si.school_code
+    </select>
+
+    <insert id="registProductConfirm" parameterType="java.util.List">
+        insert into
+            product_regist(
+                    img,
+                    product_name,
+                    product_price,
+                    zip_code,
+                    school_name,
+                    admin_id,
+                    admin_name,
+                    reg_date,
+                    mod_date
+                    )
+        values
+            <foreach collection="list" item="item" separator=", ">
+            (
+               #{item.img},
+               #{item.product_name},
+               #{item.product_price},
+               #{item.zip_code},
+               #{item.school_name},
+               #{item.admin_id},
+               #{item.admin_name},
+               NOW(),
+               NOW()
+              )
+            </foreach>
+    </insert>
+
+    <select id="selectAllProduct" resultType="com.oneteam.dormeaseadmin.product.ProductDto">
+        SELECT
+            *
+        FROM
+            product
+    </select>
+
+    <select id="selectProduct" parameterType="String" resultType="com.oneteam.dormeaseadmin.product.ProductDto">
+        SELECT
+            *
+        FROM
+            product
+        WHERE
+            name LIKE CONCAT('%', #{productName}, '%')
+    </select>
+
+    <select id="isExistDatabase" parameterType="com.oneteam.dormeaseadmin.product.ProductRegistDto" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            product_regist
+        WHERE
+            product_name = #{product_name} AND
+            zip_code = #{zip_code} AND
+            status = 1
+    </select>
+
+    <select id="registProductList" resultType="com.oneteam.dormeaseadmin.product.ProductRegistDto">
+        SELECT
+            *
+        FROM
+            product_regist
+        WHERE
+            zip_code = #{zip_code} AND
+            product_name like CONCAT('%',#{keyWord},'%') AND
+            status = 1
+        ORDER BY
+            no DESC
+        LIMIT #{skip}, #{amount}
+    </select>
+
+    <select id="listTotalCnt" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            product_regist
+        WHERE
+            zip_code = #{zip_code} AND
+            product_name like CONCAT('%',#{keyWord},'%') AND
+            status = 1
+    </select>
+
+    <update id="unRegistProductByNo" parameterType="Integer">
+        UPDATE
+            product_regist
+        SET
+            status = 0
+        WHERE
+            no = #{no}
+    </update>
+
+    <!--  최종 관리자 용  -->
+    <select id="isAlreadyRegist" parameterType="String" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            product
+        WHERE
+            name = #{productName} AND
+            status = 1
+    </select>
+
+    <insert id="adminProductConfirm" parameterType="com.oneteam.dormeaseadmin.product.ProductDto">
+        INSERT INTO
+            product(
+                    img,
+                    name,
+                    price,
+                    admin_id,
+                    admin_name,
+                    status,
+                    reg_date,
+                    mod_date)
+        VALUES (
+                #{img},
+                #{name},
+                #{price},
+                #{admin_id},
+                #{admin_name},
+                1,
+                NOW(),
+                NOW()
+        )
+    </insert>
+
+    <select id="adminProductList" resultType="com.oneteam.dormeaseadmin.product.ProductDto">
+        SELECT
+            *
+        FROM
+            product
+        WHERE
+            name like CONCAT('%',#{keyWord},'%') AND
+            status = 1
+        ORDER BY
+            no DESC
+            LIMIT #{skip}, #{amount}
+    </select>
+
+    <select id="adminListTotalCnt" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            product
+        WHERE
+            name like CONCAT('%',#{keyWord},'%') AND
+            status = 1
+    </select>
+
+    <select id="searchProductByNo" parameterType="Integer" resultType="com.oneteam.dormeaseadmin.product.ProductDto">
+        SELECT
+            *
+        FROM
+            product
+        WHERE no = #{no}
+    </select>
+
+    <select id="searchProductNameByNo" parameterType="Integer" resultType="String">
+        SELECT
+            name
+        FROM
+            product
+        WHERE no = #{no}
+    </select>
+
+    <update id="unRegistProductByName" parameterType="String">
+        UPDATE
+            product_regist
+        SET
+            status = 0
+        WHERE
+            product_name = #{productName}
+    </update>
+
+    <update id="unRegistProductAdmin" parameterType="Integer">
+        UPDATE
+            product
+        SET
+            status = 0
+        WHERE
+            no = #{no}
+    </update>
+
+
+
+</mapper>

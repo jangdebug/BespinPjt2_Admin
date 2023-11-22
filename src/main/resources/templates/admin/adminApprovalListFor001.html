@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="~{/include/title.html::title}"></title>
+
+    <link rel="stylesheet" th:href="@{/css/test.css}">
+
+    <script th:replace="~{/include/common_js.html::jquery_cdn}" type="text/javascript"></script>
+    <script th:replace="~{/include/adminApprovalListFor001Js.html::js}" type="text/javascript"></script>
+
+</head>
+<body>
+
+<div>
+
+    <div>
+       최고 교직원 관리자 승인 페이지
+    </div>
+    <div id="sectionWrap">
+        <div class="studentsList">
+            <table>
+                <thead>
+                    <tr>
+                        <th>관리자 번호</th>
+                        <th>관리자 이름</th>
+                        <th>관리자 아이디</th>
+                        <th>교직원 부서</th>
+                        <th>교직원 우편번호</th>
+                        <th>교직원 주소</th>
+                        <th>가입일</th>
+                        <th>수정일</th>
+                        <th>등급</th>
+                        <th>승인</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="memberDto : ${memberDtos}">
+                        <td th:text="${memberDto.no}"></td>
+                        <td th:text="${memberDto.name}"></td>
+                        <td th:text="${memberDto.id}"></td>
+                        <td th:text="${memberDto.position}"></td>
+                        <td th:text="${memberDto.zip_code}"></td>
+                        <td th:text="${memberDto.address} + ${studentDto.address_detail1} + ${studentDto.address_detail1}"></td>
+                        <td th:text="${memberDto.reg_date}"></td>
+                        <td th:text="${memberDto.mod_date}"></td>
+                        <td th:text="${memberDto.grade}"></td>
+                        <td th:if='${memberDto.grade == "admin_002"}'>
+                            <a class="approveStudent" href="#none" th:data-no="${memberDto.no}">승인</a>
+                        </td>
+                        <td th:if='${memberDto.grade != "admin_002"}'></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pageWrap">
+                <div class="pageNumber">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script th:src="@{/js/admin/postCodeApi.js}" type="text/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+package com.oneteam.dormeaseadmin.upload;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+
+@Mapper
+public interface IExcelUploadMapper {
+
+    int insertExcelData(List<ExcelDataDto> excelDataDtos);
+
+}

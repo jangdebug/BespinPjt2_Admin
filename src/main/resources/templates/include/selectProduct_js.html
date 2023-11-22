@@ -1,0 +1,102 @@
+<script th:fragment="js" type="text/javascript">
+
+  $(document).ready(function(){
+    console.log("selectProduct_js READY!!");
+
+      select_product();
+      remove_product();
+  });
+
+  function select_product(){
+      console.log("select_product()");
+
+      $(document).on('click', '#selectProduct table tr td a.add_product', function(){
+          let productName = $(this).data('product-name');
+          let productPrice = $(this).data('product-price');
+          let img = $(this).data('img');
+
+          ajax_is_exist_database(productName, function(countExist){
+              if(countExist > 0){
+                  alert('이미 개시 중인 상품입니다.');
+              }
+              else{
+                  if(!is_exist_name(productName)){
+                      let appendTag = "<li id='" + productName + "' class='addProduct'>";
+                      appendTag += '<img width="50" height="50" src="/dormEaseUploadImg/admin/product/' +  img + '">';
+                      appendTag += '상품 명 : ' + productName;
+                      appendTag += '상품 가격 : ' + productPrice;
+                      appendTag += "<a href='#none' class='remove_product'>X</a>";
+                      appendTag += "</li>";
+                      $("#checkedProduct ul").append(appendTag);
+
+                      let inputTag = "<input type='hidden' name='name' ";
+                      inputTag += "value='" + productName +"'>";
+                      inputTag += "<input type='hidden' name='price' ";
+                      inputTag += "value='" + productPrice +"'>";
+                      inputTag += "<input type='hidden' name='img' ";
+                      inputTag += "value='" + img +"'>";
+                      $("#registProduct form input[type='hidden']:last").after(inputTag);
+
+                      alert('상품을 추가하였습니다.');
+                  }
+                  else{
+                      alert('이미 추가한 상품입니다.');
+                  }
+              }
+          });
+      })
+  }
+
+  function is_exist_name(name){
+      console.log('is_exist_name');
+
+      //exist_id !== null은
+      // exist_id null이 아니라면
+      // 해당 id를 가진 요소가 존재한다는 것을 의미
+      let exist_id = document.getElementById(name);
+      return exist_id !== null;
+  }
+
+  function remove_product(){
+      console.log("remove_product()");
+
+      $(document).on('click', '#checkedProduct ul li  a.remove_product', function(){
+
+          //해당 a 버튼과 가장 밀접한 li
+          let removeCheckedProduct = $(this).closest('li');
+          removeCheckedProduct.remove();
+
+          let removeRegistProduct = $(removeCheckedProduct[0]).prop("id");
+          $("#registProduct form input[value='" + removeRegistProduct + "']").remove();
+
+          alert('삭제하였습니다.');
+      })
+  }
+
+  function ajax_is_exist_database(name, callback){
+      console.log('ajax_is_exist_database');
+
+      let msgDto = {
+          name : name
+      }
+
+      $.ajax({
+          url: '/product/isExistDatabase',
+          method: 'POST',
+          data: JSON.stringify(msgDto),
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
+          success: function(data) {
+              console.log('AJAX SUCCESS - ajax_is_exist_database()');
+
+              callback(data.countExist); // 결과를 콜백 함수에 전달
+          },
+          error: function(data) {
+              console.log('AJAX ERROR - ajax_is_exist_database()');
+              callback(false); // 오류 시 기본값을 전달
+              alert('상품을 찾는 도중 오류가 걸렸습니다..');
+          }
+      });
+  }
+
+</script>

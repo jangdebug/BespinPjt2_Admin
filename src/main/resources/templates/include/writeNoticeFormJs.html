@@ -1,0 +1,58 @@
+<script th:fragment="js" type="text/javascript">
+
+    let isFiveFixedNotice = false;
+
+    $(document).ready(function() {
+        console.log('DOCUMENT READY!!');
+
+        initEvent();
+
+    });
+
+    function initEvent() {
+        console.log("initEvent() CALLED!!!");
+
+        $("#fix").on('click', function (){
+
+
+        });
+    }
+
+    // AJAX START
+    function ajax_checkFixedNotice(){
+        console.log("ajax_checkFixedNotice() CALLED!!!");
+
+        msgDto={
+            'fix': fix,
+        }
+
+        $.ajax({
+            url: '/notice/checkFixedNotice',
+            type: 'GET',
+            data: msgDto,
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function(data) {
+                console.log('AJAX SUCCESS - ajax_checkFixedNotice()');
+
+                let isFiveFixedNotice = data.isFiveFixedNotice;
+                $("#calendarForFixNotice").children().remove();
+                let appendTag = "";
+
+                if(isFiveFixedNotice) {
+                    alert("상단 고정 게시물은 최대 5개까지 가능합니다.");
+                } else {
+                    appendTag += "<input type='date' name='start_date'>";
+                    appendTag += "<input type='date' name='end_date'>";
+                    isFiveFixedNotice = true;
+                }
+
+                $("#calendarForFixNotice").append(appendTag);
+
+            },
+            error: function(data) {
+                console.log('AJAX ERROR - ajax_checkFixedNotice()');
+            }
+        });
+    }
+</script>

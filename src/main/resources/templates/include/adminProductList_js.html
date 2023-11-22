@@ -1,0 +1,111 @@
+<script th:fragment="js" th:inline="javascript" type="text/javascript">
+
+$(document).ready(function() {
+    console.log('READY!!');
+
+    setPage();
+
+    init_main_event();
+
+    unRegistProductAdmin();
+
+});
+
+function search(){
+    console.log('search() CALLED!!');
+
+    let keyWord = $('input[name="keyword"]').val();
+    let url = $('.product_list').attr("id");
+
+    location.href = '/product/' + url + '?keyWord=' + keyWord;
+}
+
+function setPage() {
+    console.log('setPage() CALLED!!');
+
+    let pageMakerDto = [[${pageMakerDto}]];
+
+    /* PAGE UI */
+    $('#section_wrap > div.page_wrap > div.page_number').children().remove();
+
+    // 이전 페이지
+    console.log(pageMakerDto.prev);
+    if (pageMakerDto.prev) {
+        $('#section_wrap > div.page_wrap > div.page_number').append('<a href="#none" data-pagenum="' + (pageMakerDto.startPage - 1) + '">PRE</a>');
+    }
+
+    // 처음 페이지
+    //if (pageMakerDto.criteria.pageNum > 5) {
+    if (pageMakerDto.criteria.pageNum > 2) {
+        $('#section_wrap > div.page_wrap > div.page_number').append('<a href="#none" data-pagenum="1">1</a><span>...</span>');
+    }
+
+    // 페이지 넘버링
+    for (let p = parseInt(pageMakerDto.startPage); p <= parseInt(pageMakerDto.endPage); p++) {
+        $('#section_wrap > div.page_wrap > div.page_number').append('<a href="#none" data-pagenum="' + p + '">' + p + '</a>');
+    }
+
+    // 페이지 하이라이트
+    $('#section_wrap > div.page_wrap > div.page_number a[data-pagenum=' + pageMakerDto.criteria.pageNum + ']').addClass('selectedPageNum');
+
+    // 다음 페이지
+    if (pageMakerDto.next) {
+        $('#section_wrap > div.page_wrap > div.page_number').append('<a href="#none" data-pagenum="' + (pageMakerDto.endPage + 1) + '">NEX</a>');
+    }
+
+    // 전체 페이지
+    $('#section_wrap > div.page_wrap > div.page_goto > span.page_total_num').text(pageMakerDto.totalPage);
+
+}
+
+function init_main_event() {
+    console.log('init_main_event() CALLED!!');
+
+    //기본 url
+    let url = $('.product_list').attr("id");
+
+    // 페이지 번호 클릭 시
+    $(document).on('click', '#section_wrap > div.page_wrap > div.page_number a', function() {
+        console.log('page number CLICK HANDLER');
+
+        let pageNum = $(this).data('pagenum');
+        let keyWord = [[${keyWord}]];
+
+        location.href = '/product/adminProductList?pageNum=' + pageNum + '&keyWord=' + keyWord;
+
+    });
+
+}
+
+
+function unRegistProductAdmin(){
+    console.log('unRegistProductAdmin() CALLED!!');
+
+    $(document).on('click', '#section_wrap > div.product_list > table tbody tr td a.unRegist', function(e){
+
+        let adminId = $(this).data('adminid');
+        let loginedId = $(this).data('loginedid');
+        if(adminId == loginedId){   //등록자와 로그인한 사람이 같아야 삭제가능
+            let no = $(this).data('no'); // data-no 속성에서 값을 가져옴
+            let product_name = $(this).data('product_name'); // data-product_name 속성에서 값을 가져옴
+            let result = confirm('정말 ' + product_name + ' 을(를) 삭제하시겠습니까?');
+
+            if (result) {
+                // URL에 파라미터를 추가하여 새로운 URL 생성
+                let newUrl = '/product/unRegistProductAdmin?no=' + no;
+
+                // 새로운 URL로 이동
+                location.href = newUrl;
+            }
+        }
+        else{
+            alert('삭제 권한이 없습니다.');
+        }
+
+
+
+    })
+}
+
+
+</script>

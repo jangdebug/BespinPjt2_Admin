@@ -1,0 +1,133 @@
+<script th:fragment="js" th:inline="javascript" type="text/javascript">
+
+  $(document).ready(function() {
+    console.log('READY!!');
+
+    setPage();
+    init_main_event();
+
+  });
+  function setPage() {
+    console.log('setPage() CALLED!!');
+
+    let pageMakerDto = [[${pageMakerDto}]];
+
+    /* PAGE UI */
+    $('#section_wrap > div.page_wrap > div.page_number').children().remove();
+
+    // 이전 페이지
+    if (pageMakerDto.prev) {
+      $('#section_wrap > div.page_wrap > div.page_number').append('<a href="#none" data-pagenum="' + (pageMakerDto.startPage - 1) + '">PRE</a>');
+    }
+
+    // 처음 페이지
+    if (pageMakerDto.criteria.pageNum > 10) {
+      $('#section_wrap > div.page_wrap > div.page_number').append('<a href="#none" data-pagenum="1">1</a><span>...</span>');
+    }
+
+    // 페이지 넘버링
+    for (let p = parseInt(pageMakerDto.startPage); p <= parseInt(pageMakerDto.endPage); p++) {
+      $('#section_wrap > div.page_wrap > div.page_number').append('<a href="#none" data-pagenum="' + p + '">' + p + '</a>');
+    }
+
+    // 페이지 하이라이트
+    $('#section_wrap > div.page_wrap > div.page_number a[data-pagenum=' + pageMakerDto.criteria.pageNum + ']').addClass('selectedPageNum');
+
+    // 다음 페이지
+    if (pageMakerDto.next) {
+      $('#section_wrap > div.page_wrap > div.page_number').append('<a href="#none" data-pagenum="' + (pageMakerDto.endPage + 1) + '">NEX</a>');
+    }
+
+    // 전체 페이지
+    $('#section_wrap > div.page_wrap > div.page_goto > span.page_total_num').text(pageMakerDto.totalPage);
+
+  }
+
+  function init_main_event() {
+    console.log('init_main_event() CALLED!!');
+
+    // 페이지 번호 클릭 시
+    $(document).on('click', '#section_wrap > div.page_wrap > div.page_number a', function() {
+      console.log('page number CLICK HANDLER');
+
+      let pageNum = $(this).data('pagenum');
+      let keyWord = [[${keyWord}]];
+      let search = [[${search}]];
+
+      console.log(keyWord);
+      console.log(pageNum);
+      console.log(typeof keyWord);
+      console.log(keyWord == "null");
+      console.log(keyWord == null);
+
+
+        if(keyWord != null && search != null){
+                location.href = '/notice/noticeListForm?pageNum=' + pageNum + "&keyWord="+keyWord +"&search="+search;
+        } else {
+            location.href = '/notice/noticeListForm?pageNum=' + pageNum;
+        }
+
+
+    });
+
+    // 페이지 번호 입력 시
+    $(document).on('click', '#section_wrap > div.page_wrap > div.page_goto a.goto_page_btn', function() {
+      console.log('page_goto BUTTON CLICK HANDLER');
+
+      let targetPageNum = $('#section_wrap input[name="page_target_num"]').val();
+      let totalPageNum = $('#section_wrap span.page_total_num').text();
+
+        let keyWord = [[${keyWord}]];
+        let search = [[${search}]];
+
+      if (targetPageNum == '' || targetPageNum == ' ' || targetPageNum == null) {
+        alert('이동하고자 하는 페이지 숫자를 입력하세요!');
+        $('#section_wrap input[name="page_target_num"]').focus();
+        return;
+
+      } else if (parseInt(targetPageNum) < 1) {
+        alert('1페이지 미만은 존재하지 않습니다!');
+        $('#section_wrap input[name="page_target_num"]').val('');
+        $('#section_wrap input[name="page_target_num"]').focus();
+        return;
+
+      } else if (parseInt(targetPageNum) > parseInt(totalPageNum)) {
+        alert(totalPageNum + '을(를) 초과할 수 없습니다!');
+        $('#section_wrap input[name="page_target_num"]').val('');
+        $('#section_wrap input[name="page_target_num"]').focus();
+        return;
+
+      }
+        if(keyWord != null && search != null){
+            location.href = '/notice/noticeListForm?pageNum=' + targetPageNum + "&keyWord="+keyWord +"&search="+search;
+        } else {
+            location.href = '/notice/noticeListForm?pageNum=' + targetPageNum;
+        }
+
+    });
+
+    $(document).on('click', "button.bt_search", function (){
+        console.log('bt_search BUTTON CLICK HANDLER');
+
+        var search_no = $('select[name="search_no"]').find(":selected").val();
+        var keyWord = $("#keyword").val();
+        var search;
+
+        if(search_no == 1){
+            search = "title";
+        } else if (search_no == 2){
+            search = "content";
+        } else if (search_no == 3){
+            search = "name";
+        }
+
+        if(keyWord != null && search != null){
+            location.href = '/notice/noticeListForm?&keyWord='+keyWord +"&search="+search;
+        } else {
+            location.href = '/notice/noticeListForm';
+        }
+
+    });
+
+  }
+</script>

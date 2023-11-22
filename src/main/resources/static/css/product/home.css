@@ -1,0 +1,71 @@
+/* custom.css */
+
+/* 추가한 클래스에 스타일 적용 */
+.container {
+    font-family: 'Roboto', sans-serif; /* Roboto 폰트 사용 */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    flex-direction: column;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 700; /* 두꺼운 폰트로 설정 */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.notice,
+.Rfinal,
+.Lfinal,
+.Rschool,
+.Lschool,
+.back{
+    margin: 10px 10px;
+    min-width: 370px;
+    max-width: 370px;
+    height: calc(18px * 4); /* 현재의 4배로 조정 */
+    max-height: calc(18px * 4); /* 현재의 4배로 조정 */
+    width: 925px;
+    max-width: 925px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* a 태그 스타일 추가 */
+.notice a,
+.Rfinal a,
+.Lfinal a,
+.Rschool a,
+.Lschool a,
+.back a {text-decoration: none;
+    font-size: 18px;
+    text-align: center;
+    display: block;
+}
+
+/* a:hover 스타일 추가 */
+.notice a:hover,
+.Rfinal a:hover,
+.Lfinal a:hover,
+.Rschool a:hover,
+.Lschool a:hover,
+.back a:hover{background-color: #FAFAFA;
+    color: black;
+}
+
+/* 폰트 부드럽게 설정 */
+body {
+    font-smooth: always;
+}

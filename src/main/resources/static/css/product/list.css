@@ -1,0 +1,273 @@
+
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	background-color: #f4f4f4;
+	flex-direction: column;
+}
+
+section {
+	width: 100%;
+	padding: 30px 0;
+	}
+
+section #section_wrap {
+	width: 1200px;
+	margin: 0 auto;
+	}
+
+
+/* WORD START */
+section #section_wrap .word {
+	text-align: center;
+	font-weight: bolder;
+	font-size: 24px; /* 원하는 크기로 조절하세요 */
+	margin-bottom: 20px; /* 아래 여백을 조절할 수 있습니다. */
+}
+/* WORD END */
+
+/* SEARCH START */
+.search_wrap {
+	display: flex; /* 내부 요소를 가로로 배치 */
+	justify-content: space-between; /* 좌우 여백을 최대화하여 요소 배치 */
+	align-items: center; /* 내부 요소를 수직 정렬 */
+}
+
+.search_area {
+	flex: 1; /* 자동으로 남은 공간을 차지하도록 설정 */
+	display: flex; /* 내부 요소를 가로로 배치 */
+	align-items: center; /* 내부 요소를 수직 정렬 */
+}
+
+.search_area input[type="text"] {
+	width: 70%; /* 입력 필드의 너비 조정 */
+	padding: 10px;
+	margin-right: 10px; /* 입력 필드 간의 간격 조정 */
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.search_area button {
+	width: auto; /* 버튼의 너비를 내용에 맞게 설정 */
+	padding: 10px 20px; /* 버튼 내부 여백 설정 */
+	background-color: #ddd; /* 회색 배경 색상 */
+	color: white; /* 텍스트 색상 */
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.search_area button:hover {
+	background-color: #999; /* 호버 시 배경 색상 변경 */
+}
+
+.search_all_wrap {
+	margin-left: 10px; /* 왼쪽 여백 설정 */
+}
+
+.search_all_wrap a {
+	text-decoration: none; /* 밑줄 제거 */
+	padding: 5px 15px; /* 링크 내부 여백 설정 */
+	background-color: #ddd; /* 회색 배경 색상 */
+	color: white; /* 텍스트 색상 */
+	border-radius: 4px; /* 둥근 모서리 설정 */
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.search_all_wrap a:hover {
+	background-color: #999; /* 호버 시 배경 색상 변경 */
+}
+/* SEARCH END */
+
+
+/* PRODUCT LIST START */
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+table, th, td {
+	border: 1px solid #e0e0e0;
+}
+
+th, td {
+	padding: 10px;
+	text-align: center;
+}
+
+th {
+	background-color: #f2f2f2;
+}
+
+/* ALTERNATING ROW COLORS */
+tr:nth-child(odd) {
+	background-color: #f9f9f9;
+}
+
+/* HOVER EFFECT */
+tr:hover {
+	background-color: #f5f5f5;
+}
+
+/* TABLE HEADERS */
+th {
+	font-weight: bold;
+}
+
+/* CUSTOM CELL STYLES (You can customize as needed) */
+td img {
+	max-width: 100px;
+	max-height: 100px;
+}
+
+/* RESPONSIVE TABLE */
+@media (max-width: 768px) {
+	table {
+		border: 0;
+	}
+	table thead {
+		display: none;
+	}
+	table tr {
+		margin-bottom: 10px;
+		display: block;
+		border: 1px solid #ccc;
+	}
+	table td {
+		border: none;
+		border-bottom: 1px solid #e0e0e0;
+		position: relative;
+		padding-left: 50%;
+	}
+	table td:before {
+		content: attr(data-label);
+		position: absolute;
+		left: 0;
+		width: 45%;
+		padding-left: 0;
+		font-weight: bold;
+	}
+}
+
+/* 삭제 버튼 스타일 */
+.product_list .unRegist {
+	display: inline-block;
+	padding: 5px 10px;
+	background-color: #f44336; /* 배경색 */
+	color: white; /* 텍스트 색상 */
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	text-decoration: none;
+	transition: background-color 0.3s;
+}
+
+.product_list .unRegist:hover {
+	background-color: #d32f2f; /* 호버 시 배경색 변경 */
+}
+
+/* PRODUCT LIST END */
+
+
+/* BACK LINK START */
+.back {
+	float: right; /* 오른쪽으로 배치 */
+	margin-top: 10px;
+	padding: 5px 15px;
+	background-color: #ddd;
+	color: white;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	text-decoration: none; /* 밑줄 제거 */
+}
+
+.back a {
+	color: inherit;
+	text-decoration: none; /* 밑줄 제거 */
+}
+
+.back:hover {
+	background-color: #999;
+	text-decoration: none; /* 호버 시 밑줄 제거 */
+}
+/* BACK LINK END */
+
+
+/* page UI START */
+section #section_wrap > div.page_wrap {
+	width: 98%;
+	margin: 0 auto 50px;
+	text-align: center;
+	}
+
+section #section_wrap > div.page_wrap > div.page_number {
+	display: inline-block;
+	}
+
+section #section_wrap > div.page_wrap > div.page_number a {
+	width: 46px;
+	height: 46px;
+	line-height: 46px;
+	text-decoration: none;
+	display: inline-block;
+	margin: 0 3px;
+	color: #3c3c3c;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	}
+
+section #section_wrap > div.page_wrap > div.page_number a:hover {
+	background-color: #e3e6e8;
+	}
+
+section #section_wrap > div.page_wrap > div.page_number a.selectedPageNum {
+	color: #fff;
+	font-weight: bolder;
+	border: 1px solid #232f3d;
+	background-color: #232f3d;
+	}
+
+section #section_wrap > div.page_wrap div.page_goto {
+	display: inline-block;
+	margin: 0 0 0 2px;
+	padding: 9px 6px 5px 15px;
+	border-radius: 7px;
+	background-color: rgba(200, 216, 235, .3);
+	}
+
+section #section_wrap > div.page_wrap div.page_goto > input[name='page_target_num'] {
+	width: 60px; height: 25px;
+	margin: 3px 0 4px 0;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	text-align: center;
+	font-weight: bolder;
+	}
+
+section #section_wrap > div.page_wrap div.page_goto > a {
+	padding: 3px 10px 8px;
+	margin: 0 11px 0 5px;
+	border: 1px solid #424f60;
+	background-color: #424f60;
+	border-radius: 5px;
+	text-decoration: none;
+	color: #fff;
+	font-weight: bolder;
+	}
+
+section #section_wrap > div.page_wrap div.page_goto > a:hover {
+	border: 1px solid #232f3d;
+	background-color: #232f3d;
+	}
+/* page UI END */
+
+
+
